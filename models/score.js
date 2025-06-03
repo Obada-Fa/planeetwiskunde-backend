@@ -1,14 +1,11 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-const ScoreSchema = new mongoose.Schema({
-  playerName: String,
-  level: Number,
-  time: Number,
-  correct: Boolean,
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
+const scoreSchema = new mongoose.Schema({
+  game: { type: String, required: true }, 
+  score: { type: Number, required: true },
+  attempt: { type: Number, default: 1 },
+  user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  createdAt: { type: Date, default: Date.now }
 });
 
-export default mongoose.model("Score", ScoreSchema);
+export default mongoose.model('Score', scoreSchema);
