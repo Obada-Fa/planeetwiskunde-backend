@@ -7,3 +7,5 @@ const userSchema = new mongoose.Schema({
     coins: {type: Number, default: 0},
     upgradeStage: {type: Number, default: 1},
 });
+
+export default mongoose.model("User", userSchema);
