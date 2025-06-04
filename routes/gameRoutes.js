@@ -7,7 +7,7 @@ import {
   getAllUsers,
   createQuestion,
   getQuestionByType,
-  getUserScores,
+  getUserScores, loginUser,
 } from '../controllers/gameController.js';
 
 const router = express.Router();
@@ -19,6 +19,8 @@ router.post('/score', saveScore);
 
 router.post('/user', registerUser);
 router.get('/users', getAllUsers);
+
+router.post('/login', loginUser)
 
 router.post('/question', createQuestion);
 router.get('/questions/:type', getQuestionByType);

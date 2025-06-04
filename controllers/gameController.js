@@ -1,13 +1,15 @@
 import Score from '../models/score.js';
 import User from '../models/user.js';
 import Question from '../models/question.js';
-
-
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 export const registerUser = async (req, res) => {
   try {
     const { name, password, role } = req.body;
-    const user = new User({ name, password, role });
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(password, salt)
+    const user = new User({ name, password: hashedPassword, role });
     await user.save();
     res.status(201).json({ message: 'User created', user });
   } catch (err) {
@@ -75,3 +77,28 @@ export const saveScore = async (req, res) => {
     res.status(500).json({ error: "Server error", details: err.message });
   }
 };
+
+export const loginUser = async (req, res) => {
+  const { name, password } = req.body;
+
+  try {
+    const user = await User.findOne({name})
+
+    if(!user){
+      return res.status(400).json({message: 'no user found'})
+    }
+
+    const passwordCompare = await bcrypt.compare(password, user.password)
+
+    if(!passwordCompare){
+      return res.status(400).json({message: 'password is wrong'})
+    }
+
+    const { password: pw, ...userWithoutPassword } = user.toObject();
+
+    const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {expiresIn: '1d'})
+    res.json({message: 'Logged in', token, user:userWithoutPassword})
+  } catch (error){
+    res.status(500).json({message: "couldn't login"})
+  }
+}
