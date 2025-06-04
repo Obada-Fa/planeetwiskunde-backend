@@ -126,3 +126,34 @@ export const loginUser = async (req, res) => {
     res.status(500).json({message: "couldn't login"})
   }
 }
+
+export const getCurrentUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId).select('-password');
+    if (!user) {
+      return res.status(400).json({ message: 'user not found' });
+    }
+    res.json(user);
+  } catch (error) {
+    res.status(400).json({ message: 'Serverfout', error });
+  }
+};
+
+export const updateCoins = async (req, res) => {
+  const {amount} = req.body
+
+  try{
+    const user = await User.findById(req.userId)
+    if(!user){
+      return res.status(400).json({message: 'no user found'})
+    }
+
+    user.coins = user.coins + amount
+
+    await user.save()
+
+    res.json({message: 'Coins added', coins: user.coins})
+  }catch (error){
+    res.status(400).json({message: error})
+  }
+}

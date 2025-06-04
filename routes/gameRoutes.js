@@ -8,8 +8,10 @@ import {
   createQuestion,
   getQuestionByType,
   getUserById,
-  getUserScores, loginUser,
+  getUserScores, loginUser, getCurrentUser, updateCoins,
 } from '../controllers/gameController.js';
+
+import {authentication} from "../middlewares/auth.js";
 
 const router = express.Router();
 
@@ -21,6 +23,9 @@ router.post('/score', saveScore);
 router.post('/user', registerUser);
 router.get('/users', getAllUsers);
 router.get('/user/:id', getUserById);
+
+router.get('/me', authentication, getCurrentUser)
+router.post('/me/coins', authentication, updateCoins)
 
 router.post('/login', loginUser)
 
