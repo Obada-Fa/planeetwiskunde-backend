@@ -7,6 +7,8 @@ import {
   getAllUsers,
   createQuestion,
   getQuestionByType,
+  getUserScores,
+  getUserById,
   getUserScores, loginUser,
 } from '../controllers/gameController.js';
 
@@ -19,6 +21,7 @@ router.post('/score', saveScore);
 
 router.post('/user', registerUser);
 router.get('/users', getAllUsers);
+router.get('/user/:id', getUserById);
 
 router.post('/login', loginUser)
 
