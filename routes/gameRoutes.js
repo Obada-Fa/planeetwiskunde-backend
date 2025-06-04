@@ -7,7 +7,6 @@ import {
   getAllUsers,
   createQuestion,
   getQuestionByType,
-  getUserScores,
   getUserById,
   getUserScores, loginUser,
 } from '../controllers/gameController.js';
