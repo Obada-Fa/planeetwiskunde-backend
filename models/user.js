@@ -6,6 +6,8 @@ const userSchema = new mongoose.Schema({
     role: {type: Number, default: 0},
     coins: {type: Number, default: 0},
     upgradeStage: {type: Number, default: 1},
+    classCode: {type: String, default: 0},
+
 });
 
 export default mongoose.model("User", userSchema);
