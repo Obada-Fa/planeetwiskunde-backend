@@ -7,6 +7,11 @@ import jwt from 'jsonwebtoken';
 export const registerUser = async (req, res) => {
   try {
     const { name, password, role } = req.body;
+
+    const checkUser = await User.findOne({name})
+    if(checkUser){
+      return res.status(400).json({error: 'username already taken'})
+    }
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(password, salt)
     const user = new User({ name, password: hashedPassword, role });
@@ -155,5 +160,13 @@ export const updateCoins = async (req, res) => {
     res.json({message: 'Coins added', coins: user.coins})
   }catch (error){
     res.status(400).json({message: error})
+  }
+}
+
+export const logOutUser = async (req, res) =>{
+  try{
+    res.json({message: 'logged out'})
+  }catch (error){
+    res.status(500).json({message: error})
   }
 }

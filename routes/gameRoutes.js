@@ -8,7 +8,7 @@ import {
   createQuestion,
   getQuestionByType,
   getUserById,
-  getUserScores, loginUser, getCurrentUser, updateCoins,
+  getUserScores, loginUser, getCurrentUser, updateCoins, logOutUser,
 } from '../controllers/gameController.js';
 
 import {authentication} from "../middlewares/auth.js";
@@ -28,6 +28,7 @@ router.get('/me', authentication, getCurrentUser)
 router.post('/me/coins', authentication, updateCoins)
 
 router.post('/login', loginUser)
+router.post('/logout', logOutUser)
 
 router.post('/question', createQuestion);
 router.get('/questions/:type', getQuestionByType);
