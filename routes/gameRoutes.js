@@ -8,7 +8,8 @@ import {
   createQuestion,
   getQuestionByType,
   getUserById,
-  getUserScores, loginUser, getCurrentUser, updateCoins,
+  getUserScores, loginUser, getCurrentUser, updateCoins,getRewards, buyReward, getUserCoins,
+  createReward 
 } from '../controllers/gameController.js';
 
 import {authentication} from "../middlewares/auth.js";
@@ -33,5 +34,12 @@ router.post('/question', createQuestion);
 router.get('/questions/:type', getQuestionByType);
 
 router.get('/scores/:userId', getUserScores);
+
+router.get('/rewards', getRewards);
+router.post('/user/:id/rewards/:rewardId', buyReward);
+router.post('/rewards', createReward);
+
+router.get('/user/:id/coins', getUserCoins);
+
 
 export default router;
