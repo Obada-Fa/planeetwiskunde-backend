@@ -253,9 +253,6 @@ export const buyReward = async (req, res) => {
 };
 
 export const changeUpgradedStage = async (req, res) => {
-  console.log("== changeUpgradedStage triggered ==");
-  console.log("BODY:", req.body);
-  console.log("USER ID:", req.userId);
   const { stage } = req.body;
 
   try {
