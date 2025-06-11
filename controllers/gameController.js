@@ -251,3 +251,25 @@ export const buyReward = async (req, res) => {
       .json({ error: "Something went wrong", details: err.message });
   }
 };
+
+export const changeUpgradedStage = async (req, res) => {
+  console.log("== changeUpgradedStage triggered ==");
+  console.log("BODY:", req.body);
+  console.log("USER ID:", req.userId);
+  const { stage } = req.body;
+
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(400).json({ message: "no user found" });
+    }
+
+    user.upgradeStage = stage
+
+    await user.save();
+
+    res.json({ message: "stage upgraded" });
+  } catch (error) {
+    res.status(400).json({ message: error });
+  }
+}
