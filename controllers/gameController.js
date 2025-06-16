@@ -1,6 +1,5 @@
 import Score from "../models/score.js";
 import User from "../models/user.js";
-import Question from "../models/question.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import Reward from "../models/reward.js";
@@ -126,29 +125,28 @@ export const saveScore = async (req, res) => {
 };
 
 export const loginUser = async (req, res) => {
-  const { name, password } = req.body;
-
   try {
+    const { name, password } = req.body;
+
     const user = await User.findOne({ name });
-
     if (!user) {
-      return res.status(400).json({ message: "no user found" });
+      return res.status(404).json({ error: "Gebruiker niet gevonden" });
     }
 
-    const passwordCompare = await bcrypt.compare(password, user.password);
-
-    if (!passwordCompare) {
-      return res.status(400).json({ message: "password is wrong" });
+    // Use bcrypt to compare hashed password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ error: "Wachtwoord klopt niet" });
     }
-
-    const { password: pw, ...userWithoutPassword } = user.toObject();
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
+      expiresIn: "1h",
     });
-    res.json({ message: "Logged in", token, user: userWithoutPassword });
-  } catch (error) {
-    res.status(500).json({ message: "couldn't login" });
+
+    res.json({ token, user });
+  } catch (err) {
+    console.error("Login error:", err);
+    res.status(500).json({ error: "Interne serverfout", details: err.message });
   }
 };
 
