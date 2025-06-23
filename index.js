@@ -2,18 +2,22 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import router from "./routes/gameRoutes.js";
+import cors from 'cors';
 
 dotenv.config();
 const app = express();
 
 // CORS headers
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  next();
-});
 
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://145.24.223.215/'
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
 // Only accept JSON
 app.use((req, res, next) => {
   if (req.header('Accept') !== 'application/json' && req.method !== 'OPTIONS') {
